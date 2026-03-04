@@ -16,5 +16,5 @@ urlpatterns = [
     path("api/dishes/", api.api_dishes),
     path("api/reviews/", api.api_reviews),
     path("api/bookings/", api.api_bookings),
-
+    path("favorite/<int:restaurant_id>/", views.add_favorite, name="favorite"),
 ]

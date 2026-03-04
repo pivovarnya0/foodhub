@@ -1,19 +1,26 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.core.paginator import Paginator
 
 from reviews.models import Review
 from .models import Restaurant, Dish
+from .models import Favorite
 
 from django.db.models import Count
 from reviews.models import Review
+from django.db.models import Avg
+
 
 def restaurant_detail(request, slug):
-
+    
     restaurant = Restaurant.objects.get(slug=slug)
 
     dishes = Dish.objects.filter(restaurant=restaurant)
 
     reviews = Review.objects.filter(restaurant=restaurant)
+
+    avg_rating = Review.objects.filter(
+        restaurant=restaurant
+    ).aggregate(Avg("rating"))["rating__avg"]
 
     return render(request,"restaurant_detail.html",{
 
@@ -21,9 +28,12 @@ def restaurant_detail(request, slug):
 
         "dishes":dishes,
 
-        "reviews":reviews
+        "reviews":reviews,
+
+        "avg_rating":avg_rating
 
     })
+
 
 from django.shortcuts import render
 from .models import Restaurant
@@ -66,3 +76,14 @@ def statistics(request):
         "stats":stats
 
     })
+
+def add_favorite(request, restaurant_id):
+
+    restaurant = Restaurant.objects.get(id=restaurant_id)
+
+    Favorite.objects.create(
+        user=request.user,
+        restaurant=restaurant
+    )
+
+    return redirect("profile")

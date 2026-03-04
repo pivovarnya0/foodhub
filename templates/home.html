@@ -1,16 +1,36 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block content %}
 
-<form method="get">
-<input type="text" name="q" placeholder="Search restaurants">
-<button type="submit">Search</button>
-</form>
+<!-- HERO -->
 
-<section class="container">
+<section style="height:500px;background:url('{% static "images/slider-image1.jpg" %}') center/cover;display:flex;align-items:center;">
 
-<h1>Our Restaurants</h1>
+<div class="container">
+
+<h1 style="color:white;font-size:60px;font-weight:700;">
+Discover the best restaurants
+</h1>
+
+<p style="color:white;font-size:20px;">
+Find your favorite place to eat
+</p>
+
+</div>
+
+</section>
+
+
+<!-- RESTAURANTS -->
+
+<section style="padding:80px 0;">
+
+<div class="container">
+
+<h2 style="text-align:center;margin-bottom:60px;">
+Our Restaurants
+</h2>
 
 <div class="row">
 
@@ -18,15 +38,21 @@
 
 <div class="col-md-4">
 
-<div class="card">
+<div style="background:white;border-radius:10px;overflow:hidden;box-shadow:0 5px 20px rgba(0,0,0,0.1);margin-bottom:40px;">
 
-<img src="{{ restaurant.image.url }}" width="300">
+<img src="{{ restaurant.image.url }}" style="width:100%;height:300px;object-fit:cover;">
+
+<div style="padding:20px;">
 
 <h3>{{ restaurant.name }}</h3>
 
-<p>{{ restaurant.description }}</p>
+<p>{{ restaurant.description|truncatewords:15 }}</p>
 
-<a href="/restaurant/{{ restaurant.slug }}/">View restaurant</a>
+<a href="/restaurant/{{ restaurant.slug }}/" class="btn btn-danger">
+View restaurant
+</a>
+
+</div>
 
 </div>
 
@@ -35,24 +61,6 @@
 {% endfor %}
 
 </div>
-
-<div>
-
-{% if page_obj.has_previous %}
-
-<a href="?page=1">First</a>
-
-<a href="?page={{ page_obj.previous_page_number }}">Previous</a>
-
-{% endif %}
-
-Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-
-{% if page_obj.has_next %}
-
-<a href="?page={{ page_obj.next_page_number }}">Next</a>
-
-{% endif %}
 
 </div>
 
