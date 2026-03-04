@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<form method="get">
+<input type="text" name="q" placeholder="Search restaurants">
+<button type="submit">Search</button>
+</form>
+
+<section class="container">
+
+<h1>Our Restaurants</h1>
+
+<div class="row">
+
+{% for restaurant in page_obj %}
+
+<div class="col-md-4">
+
+<div class="card">
+
+<img src="{{ restaurant.image.url }}" width="300">
+
+<h3>{{ restaurant.name }}</h3>
+
+<p>{{ restaurant.description }}</p>
+
+<a href="/restaurant/{{ restaurant.slug }}/">View restaurant</a>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+<div>
+
+{% if page_obj.has_previous %}
+
+<a href="?page=1">First</a>
+
+<a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+
+{% endif %}
+
+Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+
+{% if page_obj.has_next %}
+
+<a href="?page={{ page_obj.next_page_number }}">Next</a>
+
+{% endif %}
+
+</div>
+
+</section>
+
+{% endblock %}

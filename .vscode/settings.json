@@ -1,0 +1,12 @@
+{
+    "python.defaultInterpreterPath": "C:\\Projects\\FoodHUB\\venv\\Scripts\\python.exe",
+    "python.pythonPath": "C:\\Projects\\FoodHUB\\venv\\Scripts\\python.exe",
+    "python.venvPath": "C:\\Projects\\FoodHUB\\venv",
+    "python.analysis.extraPaths": [
+        "C:\\Projects\\FoodHUB\\venv\\Lib\\site-packages",
+        "${workspaceFolder}"
+    ],
+    "python.analysis.packageIndexDepth": 2,
+    "python.analysis.useLibraryCodeForTypes": true,
+    "python.envFile": "${workspaceFolder}/.env"
+}

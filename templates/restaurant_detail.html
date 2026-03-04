@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<h1>{{ restaurant.name }}</h1>
+
+<img src="{{ restaurant.image.url }}" width="400">
+
+<p>{{ restaurant.description }}</p>
+
+<h2>Menu</h2>
+
+<a href="/booking/{{ restaurant.id }}/" class="btn btn-primary">
+Reserve table
+</a>
+<a href="/review/{{ restaurant.id }}/" class="btn btn-success">
+Leave review
+</a>
+
+{% for dish in dishes %}
+    <div>
+        <h3>{{ dish.name }} - {{ dish.price }} ₸</h3>
+        <img src="{{ dish.image.url }}" width="200">
+    </div>
+{% endfor %}
+
+<h2>Reviews</h2>
+
+{% for review in reviews %}
+
+<div style="border:1px solid #ccc; padding:10px; margin:10px;">
+    
+<b>{{ review.user.username }}</b>
+
+ {{ review.rating }}/5
+
+<p>{{ review.comment }}</p>
+
+</div>
+
+<h3>Add Review</h3>
+
+<form method="post" action="/review/{{ restaurant.id }}/">
+    {% csrf_token %}
+    
+    <label>Rating</label>
+    <input type="number" name="rating" min="1" max="5">
+
+    <label>Comment</label>
+    <textarea name="comment"></textarea>
+
+    <button type="submit">Submit</button>
+</form>
+
+<h3>Average rating</h3>
+
+{% if avg_rating %}
+ {{ avg_rating|floatformat:1 }} / 5
+{% else %}
+No rating yet
+{% endif %}
+
+
+{% endfor %}
+
+{% endblock %}

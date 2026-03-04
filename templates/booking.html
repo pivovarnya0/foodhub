@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Reserve table at {{ restaurant.name }}</h2>
+
+<form method="POST">
+{% csrf_token %}
+
+<label>Date</label>
+<input type="date" name="date">
+
+<label>Guests</label>
+<input type="number" name="guests">
+
+<button type="submit">Book</button>
+
+</form>
+
+{% endblock %}
