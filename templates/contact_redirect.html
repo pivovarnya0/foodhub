@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Contact Redirect</title>
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="message" placeholder="Сообщение">
+        <button type="submit">Отправить</button>
+    </form>
+</body>
+</html>

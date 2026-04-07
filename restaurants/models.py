@@ -23,6 +23,7 @@ class Restaurant(models.Model):
     image = models.ImageField(upload_to='restaurants/')
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tag, blank=True)
+    status = models.CharField(max_length=20, default='draft')
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -48,3 +49,6 @@ class Favorite(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
 
     created = models.DateTimeField(auto_now_add=True)
+
+
+from django.db import models
