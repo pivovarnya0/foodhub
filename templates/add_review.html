@@ -1,26 +1,25 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-<h2>Leave review for {{ restaurant.name }}</h2>
-
-<form method="POST">
-{% csrf_token %}
-
-<label>Rating</label>
-<select name="rating">
-<option value="1">1</option>
-<option value="2">2</option>
-<option value="3">3</option>
-<option value="4">4</option>
-<option value="5">5</option>
-</select>
-
-<label>Comment</label>
-<textarea name="comment"></textarea>
-
-<button type="submit">Submit</button>
-
-</form>
-
+<section class="py-5 auth-section">
+    <div class="container">
+        <div class="col-md-7 col-lg-5 mx-auto">
+            <div class="card border-0 shadow-lg p-4 rounded-4">
+                <h2 class="fw-bold mb-3">Write a Review for {{ restaurant.name }}</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Rating</label>
+                        <input type="number" name="rating" min="1" max="5" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Comment</label>
+                        <textarea name="comment" rows="4" class="form-control" required></textarea>
+                    </div>
+                    <button class="btn btn-dark w-100">Submit Review</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

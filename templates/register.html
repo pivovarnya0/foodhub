@@ -1,16 +1,49 @@
-{% extends "base.html" %}
+﻿{% extends 'base.html' %}
 
 {% block content %}
+<section class="auth-page">
+    <div class="auth-backdrop"></div>
+    <div class="container">
+        <div class="auth-card mx-auto reveal-up">
+            <p class="auth-mini">Join FoodHub</p>
+            <h2 class="text-center fw-bold mb-4">Create Account</h2>
 
-<h2>Register</h2>
+            <form method="post" novalidate>
+                {% csrf_token %}
 
-<form method="post">
-{% csrf_token %}
+                <div class="mb-3">
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                        <div class="text-danger small mt-1">{{ form.username.errors.0 }}</div>
+                    {% endif %}
+                </div>
 
-{{ form }}
+                <div class="mb-3">
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>
+                    {% endif %}
+                </div>
 
-<button type="submit">Register</button>
+                <div class="mb-3">
+                    {{ form.password1 }}
+                    {% if form.password1.errors %}
+                        <div class="text-danger small mt-1">{{ form.password1.errors.0 }}</div>
+                    {% endif %}
+                </div>
 
-</form>
+                <div class="mb-3">
+                    {{ form.password2 }}
+                    {% if form.password2.errors %}
+                        <div class="text-danger small mt-1">{{ form.password2.errors.0 }}</div>
+                    {% endif %}
+                </div>
 
+                <button type="submit" class="btn btn-warning w-100 btn-pill auth-btn">
+                    Register
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
 {% endblock %}

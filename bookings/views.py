@@ -1,12 +1,13 @@
-from django.shortcuts import render, redirect
-from .models import Booking
-from restaurants.models import Restaurant
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect, render
+
+from restaurants.models import Restaurant
+from .models import Booking
+
 
 @login_required
 def book_table(request, restaurant_id):
-
-    restaurant = Restaurant.objects.get(id=restaurant_id)
+    restaurant = get_object_or_404(Restaurant, id=restaurant_id)
 
     if request.method == 'POST':
         date = request.POST.get('date')
@@ -16,9 +17,8 @@ def book_table(request, restaurant_id):
             user=request.user,
             restaurant=restaurant,
             date=date,
-            guests=guests
+            guests=guests,
         )
-
-        return redirect('/')
+        return redirect('restaurant_detail', slug=restaurant.slug)
 
     return render(request, 'booking.html', {'restaurant': restaurant})

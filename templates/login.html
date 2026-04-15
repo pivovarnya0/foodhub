@@ -1,16 +1,29 @@
-{% extends "base.html" %}
+﻿{% extends 'base.html' %}
 
 {% block content %}
+<section class="auth-page">
+    <div class="auth-backdrop"></div>
+    <div class="container">
+        <div class="auth-card mx-auto reveal-up">
+            <p class="auth-mini">Welcome back</p>
+            <h2 class="text-center fw-bold mb-4">Login</h2>
 
-<h2>Login</h2>
+            <form method="post">
+                {% csrf_token %}
 
-<form method="post">
-{% csrf_token %}
+                <div class="mb-3">
+                    {{ form.username }}
+                </div>
 
-{{ form }}
+                <div class="mb-3">
+                    {{ form.password }}
+                </div>
 
-<button type="submit">Login</button>
-
-</form>
-
+                <button type="submit" class="btn btn-warning w-100 btn-pill auth-btn">
+                    Sign In
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
 {% endblock %}

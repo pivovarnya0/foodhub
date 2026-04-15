@@ -1,10 +1,113 @@
-{% extends "base.html" %}
+﻿{% extends 'base.html' %}
 
 {% block content %}
+<section class="profile-hero py-5">
+    <div class="container">
+        <div class="profile-header-card">
+            <div>
+                <p class="profile-mini">Personal dashboard</p>
+                <h1 class="fw-bold mb-2">Welcome back, {{ user.username }}</h1>
+                <p class="mb-0 text-muted">Manage your favorites, bookings and reviews in one place.</p>
+            </div>
+            <div class="profile-avatar">
+                {{ user.username|slice:":1"|upper }}
+            </div>
+        </div>
 
-<h2>Profile</h2>
+        <div class="row g-4 mt-1">
+            <div class="col-md-4">
+                <div class="profile-stat-card">
+                    <span>Favorites</span>
+                    <h2>{{ favorites.count }}</h2>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="profile-stat-card">
+                    <span>Reviews</span>
+                    <h2>{{ reviews.count }}</h2>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="profile-stat-card">
+                    <span>Bookings</span>
+                    <h2>{{ bookings.count }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-<p>Username: {{ user.username }}</p>
-<p>Email: {{ user.email }}</p>
+<section class="restaurants-section py-5">
+    <div class="container">
+        <div class="section-top">
+            <div>
+                <h2 class="section-title-main">Your Favorite Restaurants</h2>
+                <p class="section-subtext">All your saved spots in one place.</p>
+            </div>
+        </div>
 
+        <div class="row g-4">
+            {% for fav in favorites %}
+            <div class="col-md-6 col-xl-4">
+                <div class="card restaurant-card h-100">
+                    <div class="restaurant-image-wrap">
+                        <img src="{{ fav.restaurant.image.url }}" class="restaurant-image" alt="{{ fav.restaurant.name }}">
+                        <div class="restaurant-image-overlay"></div>
+                    </div>
+
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="fw-bold restaurant-title">{{ fav.restaurant.name }}</h5>
+                        <p class="restaurant-desc">{{ fav.restaurant.description|truncatewords:16 }}</p>
+
+                        <div class="mt-auto d-flex gap-2">
+                            <a href="{% url 'restaurant_detail' fav.restaurant.slug %}" class="btn btn-dark flex-fill btn-pill">Open</a>
+                            <a href="{% url 'remove_favorite' fav.restaurant.id %}" class="btn btn-outline-danger flex-fill btn-pill">Remove</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="empty-state-box">
+                    <h4>No favorites yet</h4>
+                    <p>Add restaurants to favorites from the home page.</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="mt-5">
+            <h2 class="section-title-main">Recent Activity</h2>
+            <div class="row g-4 mt-1">
+                <div class="col-lg-6">
+                    <div class="activity-box">
+                        <h5 class="mb-3">Latest Reviews</h5>
+                        {% for review in reviews|slice:":3" %}
+                            <div class="activity-item">
+                                <strong>{{ review.restaurant.name }}</strong>
+                                <span>{{ review.rating }}/5</span>
+                            </div>
+                        {% empty %}
+                            <p class="text-muted mb-0">No reviews yet.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="activity-box">
+                        <h5 class="mb-3">Latest Bookings</h5>
+                        {% for booking in bookings|slice:":3" %}
+                            <div class="activity-item">
+                                <strong>{{ booking.restaurant.name }}</strong>
+                                <span>{{ booking.date }}</span>
+                            </div>
+                        {% empty %}
+                            <p class="text-muted mb-0">No bookings yet.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

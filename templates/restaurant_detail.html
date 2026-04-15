@@ -1,102 +1,66 @@
-{% extends 'base.html' %}
-{% load static %}
+﻿{% extends 'base.html' %}
 
 {% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6">
+                <img src="{{ restaurant.image.url }}" class="img-fluid rounded-4 shadow-lg" alt="{{ restaurant.name }}">
+            </div>
+            <div class="col-lg-6">
+                <span class="badge category-badge mb-2">{{ restaurant.category.name }}</span>
+                <h1 class="fw-bold mb-3">{{ restaurant.name }}</h1>
+                <p class="text-muted mb-3">{{ restaurant.description }}</p>
+                <p class="mb-4">
+                    <strong>Average rating:</strong>
+                    {% if avg_rating %}
+                        {{ avg_rating|floatformat:1 }}
+                    {% else %}
+                        No ratings yet
+                    {% endif %}
+                </p>
 
-<h1>{{ restaurant.name }}</h1>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{% url 'favorite' restaurant.id %}" class="btn btn-outline-danger btn-pill"> 
+                        {% if is_favorite %}Remove Favorite{% else %}Add to Favorites{% endif %}
+                    </a>
+                    <a href="{% url 'add_review' restaurant.id %}" class="btn btn-outline-dark btn-pill">Write Review</a>
+                    <a href="{% url 'booking' restaurant.id %}" class="btn btn-warning btn-pill">Book a Table</a>
+                </div>
+            </div>
+        </div>
 
-<img src="{{ restaurant.image.url }}" width="400">
+        <div class="mt-5">
+            <h2 class="section-title-main mb-4">Menu</h2>
+            <div class="row g-4">
+                {% for dish in dishes %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card restaurant-card h-100">
+                        <img src="{{ dish.image.url }}" class="card-img-top restaurant-image" alt="{{ dish.name }}">
+                        <div class="card-body">
+                            <h5 class="fw-bold">{{ dish.name }}</h5>
+                            <p class="text-warning fw-semibold mb-0">{{ dish.price }} ₸</p>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p>No dishes available.</p>
+                {% endfor %}
+            </div>
+        </div>
 
-<p>{{ restaurant.description }}</p>
-
-
-<a class="btn btn-danger" href="/favorite/{{ restaurant.id }}/">
-Add to favorites
-</a>
-
-<a href="/booking/{{ restaurant.id }}/" class="btn btn-primary">
-Reserve table
-</a>
-
-<a href="/review/{{ restaurant.id }}/" class="btn btn-success">
-Leave review
-</a>
-
-
-<h3>Average rating</h3>
-
-{% if avg_rating %}
-{{ avg_rating|floatformat:1 }} / 5
-{% else %}
-No rating yet
-{% endif %}
-
-
-<hr>
-
-
-<h2>Menu</h2>
-
-{% for dish in dishes %}
-
-<div style="margin-bottom:20px;">
-
-<h3>{{ dish.name }} - {{ dish.price }} ₸</h3>
-
-<img src="{{ dish.image.url }}" width="200">
-
-</div>
-
-{% endfor %}
-
-
-<hr>
-
-
-<h2>Reviews</h2>
-
-{% for review in reviews %}
-
-<div style="border:1px solid #ccc; padding:10px; margin:10px;">
-
-<b>{{ review.user.username }}</b>
-
-<p>Rating: {{ review.rating }}/5</p>
-
-<p>{{ review.comment }}</p>
-
-</div>
-
-{% empty %}
-
-<p>No reviews yet.</p>
-
-{% endfor %}
-
-
-<hr>
-
-
-<h3>Add Review</h3>
-
-<form method="post" action="/review/{{ restaurant.id }}/">
-
-{% csrf_token %}
-
-<label>Rating</label>
-<input type="number" name="rating" min="1" max="5">
-
-<br><br>
-
-<label>Comment</label>
-<textarea name="comment"></textarea>
-
-<br><br>
-
-<button type="submit" class="btn btn-success">
-Submit
-</button>
-
-</form>
-
+        <div class="mt-5">
+            <h2 class="section-title-main mb-4">Reviews</h2>
+            {% for review in reviews %}
+            <div class="review-box mb-3">
+                <h6 class="fw-bold mb-1">{{ review.user.username }} - {{ review.rating }}/5</h6>
+                <p class="mb-1">{{ review.comment }}</p>
+                <small class="text-muted">{{ review.created_at }}</small>
+            </div>
+            {% empty %}
+            <p>No reviews yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
 {% endblock %}
